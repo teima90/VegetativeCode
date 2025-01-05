@@ -1,0 +1,100 @@
+[
+  {
+    "objectID": "posts/20250104_Before_starting/index.html",
+    "href": "posts/20250104_Before_starting/index.html",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "",
+    "text": "Plants and “Bioinfomatics” according to ChatGPT\nOrganize first, program later. Having a predefined structure for your bioinformatic projects can save you significant time and effort when it comes to publishing your results and sharing your code with colleagues. It also makes programming itself more efficient by helping you avoid the chaos of disorganized files scattered across multiple folders, repetitive objects taking up space, or endlessly copy-pasting parts of the same code.\nTo help you to avoid these pitfalls (which may or may not be based on my personal experience), I am sharing 10 useful tips to keep in mind before starting your bioinformatics journey in R."
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#one-problem-one-project",
+    "href": "posts/20250104_Before_starting/index.html#one-problem-one-project",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "One problem, one project",
+    "text": "One problem, one project\nAt this point of my life, everything that I do in R lives within a RStudio Project. RStudio Projects act as containers, creating an environment where you have access to all the files, data, and configurations you need for a specific analysis. A project can vary in size, from small tasks to large-scale analyses, but it’s important to keep a logical structure. I wouldn’t create a single project for my entire PhD thesis. Instead, I would break it down into separate projects, each focusing on a set of related analyses. For example, for the purposes of this blog, I will create a separate RStudio project for each analysis, with each analysis corresponding to a different post.\nWhen creating separate RStudio Projects, it is important to think about how long you’ll be working on a specific analysis. If you add new analyses within the same project that require different package versions, it could break earlier analyses that depend on older versions. By keeping projects focused and limiting their scope, you can maintain consistency in the tools and package versions, which is essential for reproducibility and version control. This brings us to the next tip.\n\n\n\n\n\n\nMore info on how to create R Projects: Using RStudio Projects"
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#create-reproducible-environments-with-renv",
+    "href": "posts/20250104_Before_starting/index.html#create-reproducible-environments-with-renv",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Create reproducible environments with renv",
+    "text": "Create reproducible environments with renv\nThe renv package is a powerful tool for managing reproducible environments in your R projects. It creates a separate library specifically for the packages you use in a project. This allows you to save and lock the exact versions of packages used during your analysis, ensuring consistent results whether revisiting the project in the future or sharing it with colleagues. By sharing the renv environment along with your code, you can guarantee that others can reproduce your work without version conflicts or missing dependencies.\n\n\n\n\n\n\nMore info on renv: Introduction to renv"
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#switch-to-notebooks-for-collaborative-and-clearer-code",
+    "href": "posts/20250104_Before_starting/index.html#switch-to-notebooks-for-collaborative-and-clearer-code",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Switch to notebooks for collaborative and clearer code",
+    "text": "Switch to notebooks for collaborative and clearer code\nMaking the transition from R scripts (.R) to R notebooks (.Rmd) can be a game changer. While scripts are great for your workflow, notebooks are much more effective when it comes to sharing your analysis in scientific publications or with collaborators. They allow you to embed plots, outputs, and explanations directly alongside your code, making your work far more accessible and easier to understand."
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#use-file.path-for-referring-directories",
+    "href": "posts/20250104_Before_starting/index.html#use-file.path-for-referring-directories",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Use file.path() for referring directories",
+    "text": "Use file.path() for referring directories\nUse this:\n\npath_data &lt;- file.path(\"Folder1\",\"SubFolder1\",\"Data\")\n\nInstead of this:\n\npath_data &lt;- (\"Folder1/SubFolder1/Data\")\n\nBy using file.path(), your code becomes compatible with different operating systems. As long as your directory structure is the same, the path will work seamlessly, whether you’re on Windows, macOS, or Linux."
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#use-set.seed-at-the-beginning-of-your-analysis",
+    "href": "posts/20250104_Before_starting/index.html#use-set.seed-at-the-beginning-of-your-analysis",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Use set.seed() at the beginning of your analysis",
+    "text": "Use set.seed() at the beginning of your analysis\nKeep randomness under control. For ensure reproducibility in you analysis, use always a seed value. For example:\n\nset.seed(101)"
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#create-your-theme-for-ggplot2",
+    "href": "posts/20250104_Before_starting/index.html#create-your-theme-for-ggplot2",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Create your theme for ggplot2",
+    "text": "Create your theme for ggplot2\nWhenever possible, I use ggplot2 for creating plots. To maintain a consistent style across all your figures—such as in a publication—while avoiding repetitive code, save your theme settings in a variable:\n\nlibrary(ggplot2)\ntheme_blog &lt;- theme_bw() + \n  theme(text = element_text(size=8, family=\"sans\"),\n    axis.text = element_text(size=8, family=\"sans\"),\n    element_line(linewidth = 0.1),\n    panel.border = element_rect(colour = \"black\", fill=NA, linewidth = 0.1),\n    strip.background = element_rect(colour = \"black\", linewidth = 0.1))\n\n\n\n\n\n\n\nWhen you use geom_text in your plots, the font size will be not match the output. To get the size that you want (e.g. 8) you should multiply the value by 5/14\n\n\n\n\nlibrary(dplyr)\nmean_values &lt;- iris %&gt;%\n  group_by(Species) %&gt;%\n  summarise(mean_sepal_length = mean(Sepal.Length))\n\nggplot(data=iris, aes(x=Species,y=Sepal.Length))+\n  geom_boxplot()+\n  geom_point()+\n  geom_text(data = mean_values, aes(x = Species, y = mean_sepal_length+1.5, \n                                    label = round(mean_sepal_length, 2)), \n            vjust = -1, color = \"red\", size = 8*5/14)+\n  ylim(c(3,9))+\n  ggtitle(\"Ugliest plot ever\")+\n  theme_blog"
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#convert-your-code-into-functions",
+    "href": "posts/20250104_Before_starting/index.html#convert-your-code-into-functions",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Convert your code into functions",
+    "text": "Convert your code into functions\nAs Hadley Wickham notes in R for Data Science:\n\n\n\n\n\n\n“A good rule of thumb is to consider writing a function whenever you’ve copied and pasted a block of code more than twice”\n\n\n\nDuring my postdoc, I frequently analyzed single-cell RNA sequencing datasets using Seurat. Often, I found myself repeating the default pipeline for data normalization and dimensionality reduction. This pipeline involves a series of steps, and instead of copying and pasting the same code repeatedly, I realized I could encapsulate the process into a reusable function. Here’s an example inspired by the tutorial Using sctransform in Seurat.\nTransform this:\n\n#Load packages\nlibrary(Seurat)\n\n#Perform sctransform\npbmc &lt;- CreateSeuratObject(counts = pbmc_data)\npbmc &lt;- SCTransform(pbmc)\npbmc &lt;- RunPCA(pbmc)\npbmc &lt;- RunUMAP(pbmc)\npbmc &lt;- FindNeighbors(pbmc)\npbmc &lt;- FindClusters(pbmc)\n\nInto this:\n\n#Load packages\nlibrary(Seurat)\nlibrary(dplyr)\n\nDefaultSeuratPipeline &lt;- function(count_matrix,...){\n  # Check if the input is valid\n  if (!is.matrix(count_matrix) && !is(count_matrix, 'dgCMatrix'))\n    stop(\"count_matrix must be a matrix or a sparseMatrix\")\n  \n  #Run basic analysis\n  object_seurat &lt;- CreateSeuratObject(count_matrix) %&gt;% \n    SCTransform() %&gt;% \n    RunPCA() %&gt;% \n    RunUMAP() %&gt;% \n    FindNeighbors() %&gt;% \n    FindClusters()\n\n  return(object_seurat)\n}\n\npbmc&lt;- DefaultSeuratPipeline(count_matrix = pbmc_data)\n\n## This is just a very simplified example to show how to transform a series of \n## steps into a function."
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#centralize-reusable-code-with-a-configuration-file",
+    "href": "posts/20250104_Before_starting/index.html#centralize-reusable-code-with-a-configuration-file",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Centralize reusable code with a configuration file",
+    "text": "Centralize reusable code with a configuration file\nImagine you are starting a new RStudio Project for the analysis related to a scientific publication. Within this project, you may create separate notebooks for each analysis related to different figures. Despite this modular setup, you will often reuse common elements like datasets, functions, themes, color schemes, or package imports. Instead of duplicating code across notebooks, create a centralized configuration file (e.g., my_config.R) to store these shared elements.\nHere’s an example of what your configuration file (my_config.R) might look like:\n\n#Set seed\nset.seed(101)\n\n##################################################\n######## Load packages ###########################\n##################################################\n\nlibrary(Seurat)\nlibrary(ggplot2)\nlibrary(dplyr)\n\n################################################\n########## Directories #########################\n################################################\n\nseurat_objects_path &lt;- file.path(\"Data\",\"Seurat\")\nroot_ath_object &lt;- \"root_ath.rds\"\n\n################################################\n########## Functions   #########################\n################################################\n\n#Function to run default pipeline in Seurat\n\nDefaultSeuratPipeline &lt;- function(count_matrix,...){\n  # Check if the input is valid\n  if (!is.matrix(count_matrix) && !is(count_matrix, 'dgCMatrix'))\n    stop(\"count_matrix must be a matrix or a sparseMatrix\")\n  \n  #Run basic analysis\n  object_seurat &lt;- CreateSeuratObject(count_matrix) %&gt;% \n    SCTransform() %&gt;% \n    RunPCA() %&gt;% \n    RunUMAP() %&gt;% \n    FindNeighbors() %&gt;% \n    FindClusters()\n\n  return(object_seurat)\n}\n\n################################################\n########## ggplot2 themes   ####################\n################################################\n\ntheme_blog &lt;- theme_bw() + \n  theme(text = element_text(size=8, family=\"sans\"),\n    axis.text = element_text(size=8, family=\"sans\"),\n    element_line(linewidth = 0.1),\n    panel.border = element_rect(colour = \"black\", fill=NA, linewidth = 0.1),\n    strip.background = element_rect(colour = \"black\", linewidth = 0.1))\n\nBy creating this configuration file, you can simply call it in any of your notebooks with:\n\n#Notebook and configuration file in the same directory\nsource(\"my_config.R\")\n\nThis approach avoids the need for repetitive copy-pasting of code. Additionally, if you need to update a directory path, theme setting, or function, you only need to make the change in my_config.R, rather than updating it across multiple notebooks."
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#export-your-plots-in-a-vectorized-format",
+    "href": "posts/20250104_Before_starting/index.html#export-your-plots-in-a-vectorized-format",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Export your plots in a vectorized format",
+    "text": "Export your plots in a vectorized format\nSave your plots in a vectorized format like PDF using ggsave() for high resolution. While this makes it easy to edit in Illustrator or Inkscape, I try to customize as much as possible in R to improve reproducibility.\n\nggsave(plot1,file=file.path(\"Figures\",\"Figure1A.pdf\"), width=5.5,\n       height=9.5, units=\"cm\", dpi=1000)"
+  },
+  {
+    "objectID": "posts/20250104_Before_starting/index.html#commit-with-git-share-with-github",
+    "href": "posts/20250104_Before_starting/index.html#commit-with-git-share-with-github",
+    "title": "10 Tips to Kickstart Your Bioinformatics Projects in R",
+    "section": "Commit with Git, share with GitHub",
+    "text": "Commit with Git, share with GitHub\nUsing Git and GitHub helps you track changes, collaborate and share your work. I believe it should be mandatory to share the full process behind generating figures in publications—starting from raw data all the way to the code for the final figures. And specially for these publications that are purely bioinformatic analysis! Luckily, many labs are now adopting this practice, and it’s common to find GitHub repositories linked to publications.\n\n\n\n\n\n\nAn extensive guide on how to use Git and GitHub with R: Happy Git and GitHub for the useR\n\n\n\n\nAcknowledgements\nThank you to everyone reading my first post! This post was written with the help of ChatGPT."
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Blog",
+    "section": "",
+    "text": "10 Tips to Kickstart Your Bioinformatics Projects in R\n\n\n\n\n\n\nR\n\n\nGeneral\n\n\nTips\n\n\n\nFirst things, first\n\n\n\n\n\nJan 4, 2025\n\n\nMaite Saura\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "Maite Saura",
+    "section": "",
+    "text": "Hi everybody! My name is Maite, and I'm a plant scientist. Originally from Spain, I've been living in Belgium for several years now, where I am conducting my postdoctoral research at the Center for Plant Systems Biology (VIB-UGent).\nI have a formal background in Biotechnology, with a specific focus on Plant Molecular Biology. A wet lab scientist. During my PhD at IFEVA in Buenos Aires (Argentina), I studied the role of BBX transcription factors in shade avoidance in Arabidopsis thaliana. But it didn’t take long to realize that rather than study a function of a gene in a plant species, I wanted to understand how plants work in a larger scale. I soon discovered that bioinformatics was key to exploring this.\nAt that time (around 2017), I had no coding skills, but I saw an opportunity to enroll in a Master’s program in Bioinformatics and Biostatistics (UOC, distance learning) while finishing my PhD. Although I found the program's focus on statistics to be stronger than its bioinformatics content, one major benefit was that I had to use R in every lesson. I completed my Master’s thesis on Machine learning for the selection of genes involved in the development of Arabidopsis thaliana using gene expression data. After that, I started to teach myself more programming in R. The best approach I found to improve my skills was to challenge myself to do everything in R—whether it was data analysis or visualizing results from my plant physiology experiments.\nThanks to this shift in my career I could get my current position, where I combine bioinformatics analysis with wet lab work, focusing on how root cell-type specific responses to biotic interactions have evolved across different plant species\nWith this blog, I would like to share some things that I have learnt and challenge myself to perform new analysis while documenting the process."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Welcome to Vegetative Code",
+    "section": "",
+    "text": "A blog with tips, tutorials and thoughts about bioinformatics focused in plant science and R.\n\nNew on the blog\n\n\n\n10 Tips to Kickstart Your Bioinformatics Projects in R\n\n\n\n\n\nThings I wish I have known before starting."
+  }
+]

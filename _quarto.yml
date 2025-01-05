@@ -1,0 +1,30 @@
+project:
+  type: website
+
+website:
+  title: "Vegetative Code"
+  navbar:
+    left:
+      - text: "Home"
+        file: index.qmd
+      - text: "Blog archive"
+        file: blog.qmd
+    right:
+      - text: "About Maite"
+        file: about.qmd
+      - text: "{{< iconify ri:bluesky-fill >}}"
+        href: "https://bsky.app/profile/maitesaura.bsky.social"
+        target: _blank
+      - text: "{{< iconify fa6-brands github >}}"
+        href: "https://github.com/teima90"
+        target: _blank
+format:
+  html:
+    theme:
+      - minty
+      - brand
+    highlight-style: github
+    css: styles.css
+
+editor: visual
+

@@ -1,0 +1,25 @@
+---
+title: "Welcome to Vegetative Code"
+about:
+  template: solana
+---
+
+A blog with tips, tutorials and thoughts about bioinformatics focused in plant science and R.
+
+#### **New on the blog**
+
+::: card
+::: {.card-header style="background-color: black;"}
+### <a href="posts/20250104_Before_starting/index.qmd" style="color: white; font-size: 25px;">10 Tips to Kickstart Your Bioinformatics Projects in R</a>
+:::
+
+::: {#card-img}
+[![](posts/20250104_Before_starting/banner.jpg)](posts/20250104_Before_starting/index.qmd)
+:::
+
+::: card-body
+Things I wish I have known before starting.
+:::
+:::
+
+------------------------------------------------------------------------
