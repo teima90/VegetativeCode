@@ -69,12 +69,14 @@ Whenever possible, I use `ggplot2` for creating plots. To maintain a consistent 
 
 ```{r}
 library(ggplot2)
-theme_blog <- theme_bw() + 
-  theme(text = element_text(size=8, family="sans"),
-    axis.text = element_text(size=8, family="sans"),
+theme_blog <- theme_bw() +
+  theme(
+    text = element_text(size = 8, family = "sans"),
+    axis.text = element_text(size = 8, family = "sans"),
     element_line(linewidth = 0.1),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth = 0.1),
-    strip.background = element_rect(colour = "black", linewidth = 0.1))
+    panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.1),
+    strip.background = element_rect(colour = "black", linewidth = 0.1)
+  )
 ```
 
 ::: {.callout-tip appearance="simple"}
@@ -87,14 +89,18 @@ mean_values <- iris %>%
   group_by(Species) %>%
   summarise(mean_sepal_length = mean(Sepal.Length))
 
-ggplot(data=iris, aes(x=Species,y=Sepal.Length))+
-  geom_boxplot()+
-  geom_point()+
-  geom_text(data = mean_values, aes(x = Species, y = mean_sepal_length+1.5, 
-                                    label = round(mean_sepal_length, 2)), 
-            vjust = -1, color = "red", size = 8*5/14)+
-  ylim(c(3,9))+
-  ggtitle("Ugliest plot ever")+
+ggplot(data = iris, aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot() +
+  geom_point() +
+  geom_text(
+    data = mean_values, aes(
+      x = Species, y = mean_sepal_length + 1.5,
+      label = round(mean_sepal_length, 2)
+    ),
+    vjust = -1, color = "red", size = 8 * 5 / 14
+  ) +
+  ylim(c(3, 9)) +
+  ggtitle("Ugliest plot ever") +
   theme_blog
 
 ```
@@ -112,10 +118,10 @@ During my postdoc, I frequently analyzed single-cell RNA sequencing datasets usi
 Transform this:
 
 ```{r, eval=FALSE}
-#Load packages
+# Load packages
 library(Seurat)
 
-#Perform sctransform
+# Perform sctransform
 pbmc <- CreateSeuratObject(counts = pbmc_data)
 pbmc <- SCTransform(pbmc)
 pbmc <- RunPCA(pbmc)
@@ -127,29 +133,30 @@ pbmc <- FindClusters(pbmc)
 Into this:
 
 ```{r, eval=FALSE}
-#Load packages
+# Load packages
 library(Seurat)
 library(dplyr)
 
-DefaultSeuratPipeline <- function(count_matrix,...){
+DefaultSeuratPipeline <- function(count_matrix, ...) {
   # Check if the input is valid
-  if (!is.matrix(count_matrix) && !is(count_matrix, 'dgCMatrix'))
+  if (!is.matrix(count_matrix) && !is(count_matrix, "dgCMatrix")) {
     stop("count_matrix must be a matrix or a sparseMatrix")
-  
-  #Run basic analysis
-  object_seurat <- CreateSeuratObject(count_matrix) %>% 
-    SCTransform() %>% 
-    RunPCA() %>% 
-    RunUMAP() %>% 
-    FindNeighbors() %>% 
+  }
+
+  # Run basic analysis
+  object_seurat <- CreateSeuratObject(count_matrix) %>%
+    SCTransform() %>%
+    RunPCA() %>%
+    RunUMAP() %>%
+    FindNeighbors() %>%
     FindClusters()
 
   return(object_seurat)
 }
 
-pbmc<- DefaultSeuratPipeline(count_matrix = pbmc_data)
+pbmc <- DefaultSeuratPipeline(count_matrix = pbmc_data)
 
-## This is just a very simplified example to show how to transform a series of 
+## This is just a very simplified example to show how to transform a series of
 ## steps into a function.
 ```
 
@@ -161,7 +168,7 @@ Here's an example of what your configuration file (`my_config.R`) might look lik
 
 ```{r, eval=FALSE}
 
-#Set seed
+# Set seed
 set.seed(101)
 
 ##################################################
@@ -176,26 +183,27 @@ library(dplyr)
 ########## Directories #########################
 ################################################
 
-seurat_objects_path <- file.path("Data","Seurat")
+seurat_objects_path <- file.path("Data", "Seurat")
 root_ath_object <- "root_ath.rds"
 
 ################################################
 ########## Functions   #########################
 ################################################
 
-#Function to run default pipeline in Seurat
+# Function to run default pipeline in Seurat
 
-DefaultSeuratPipeline <- function(count_matrix,...){
+DefaultSeuratPipeline <- function(count_matrix, ...) {
   # Check if the input is valid
-  if (!is.matrix(count_matrix) && !is(count_matrix, 'dgCMatrix'))
+  if (!is.matrix(count_matrix) && !is(count_matrix, "dgCMatrix")) {
     stop("count_matrix must be a matrix or a sparseMatrix")
-  
-  #Run basic analysis
-  object_seurat <- CreateSeuratObject(count_matrix) %>% 
-    SCTransform() %>% 
-    RunPCA() %>% 
-    RunUMAP() %>% 
-    FindNeighbors() %>% 
+  }
+
+  # Run basic analysis
+  object_seurat <- CreateSeuratObject(count_matrix) %>%
+    SCTransform() %>%
+    RunPCA() %>%
+    RunUMAP() %>%
+    FindNeighbors() %>%
     FindClusters()
 
   return(object_seurat)
@@ -205,19 +213,21 @@ DefaultSeuratPipeline <- function(count_matrix,...){
 ########## ggplot2 themes   ####################
 ################################################
 
-theme_blog <- theme_bw() + 
-  theme(text = element_text(size=8, family="sans"),
-    axis.text = element_text(size=8, family="sans"),
+theme_blog <- theme_bw() +
+  theme(
+    text = element_text(size = 8, family = "sans"),
+    axis.text = element_text(size = 8, family = "sans"),
     element_line(linewidth = 0.1),
-    panel.border = element_rect(colour = "black", fill=NA, linewidth = 0.1),
-    strip.background = element_rect(colour = "black", linewidth = 0.1))
+    panel.border = element_rect(colour = "black", fill = NA, linewidth = 0.1),
+    strip.background = element_rect(colour = "black", linewidth = 0.1)
+  )
 
 ```
 
 By creating this configuration file, you can simply call it in any of your notebooks with:
 
 ```{r, eval=FALSE}
-#Notebook and configuration file in the same directory
+# Notebook and configuration file in the same directory
 source("my_config.R")
 ```
 
@@ -228,8 +238,10 @@ This approach avoids the need for repetitive copy-pasting of code. Additionally,
 Save your plots in a **vectorized format** like PDF using `ggsave()` for high resolution. While this makes it easy to edit in Illustrator or Inkscape, I try to customize as much as possible in R to improve reproducibility.
 
 ```{r, eval=FALSE}
-ggsave(plot1,file=file.path("Figures","Figure1A.pdf"), width=5.5,
-       height=9.5, units="cm", dpi=1000)
+ggsave(plot1,
+  file = file.path("Figures", "Figure1A.pdf"), width = 5.5,
+  height = 9.5, units = "cm", dpi = 1000
+)
 ```
 
 ## Commit with Git, share with GitHub
